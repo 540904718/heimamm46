@@ -24,16 +24,24 @@
         <el-form-item>
           <el-row>
             <el-col :span="17">
-              <el-input prefix-icon="el-icon-key" placeholder="请输入验证码" v-model="loginForm.loginCode"></el-input>
+              <el-input
+                prefix-icon="el-icon-key"
+                placeholder="请输入验证码"
+                v-model="loginForm.loginCode"
+              ></el-input>
             </el-col>
             <el-col :span="7">
-              <img class="login-code" src="../../assets/login_captcha.png" alt="">
+              <img class="login-code" src="../../assets/login_captcha.png" alt />
             </el-col>
           </el-row>
         </el-form-item>
         <!-- 用户协议 -->
         <el-form-item>
-          <el-checkbox v-model="loginForm.isChecked">是否同意用户协议</el-checkbox>
+          <el-checkbox v-model="loginForm.isChecked">
+            我已阅读并同意
+            <el-link type="primary">用户协议</el-link>和
+            <el-link type="primary">隐私条款</el-link>
+          </el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">登录</el-button>
@@ -87,10 +95,10 @@ export default {
     background: rgba(245, 245, 245, 1);
     padding-right: 41px;
     box-sizing: border-box;
-    
+
     .login-code {
       width: 100%;
-      height: 40.8px
+      height: 40.8px;
     }
 
     .title-box {
