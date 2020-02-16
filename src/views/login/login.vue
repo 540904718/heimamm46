@@ -44,8 +44,8 @@
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">登录</el-button>
-          <el-button>取消</el-button>
+          <el-button class="my-btn" type="primary" @click="onSubmit">登录</el-button>
+          <el-button class="my-btn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -122,6 +122,13 @@ export default {
         margin-left: 12px;
       }
     }
+
+     // 底部的按钮
+  .my-btn {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 26px;
+  }
   }
 }
 </style>
