@@ -1,9 +1,38 @@
 <template>
   <div>
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+    <el-dialog width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
+        <el-form-item label="昵称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="图形码" :label-width="formLabelWidth">
+            <el-row>
+                <el-col :span="17">
+                     <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-col>
+                <el-col class="regist-box" :span="7">
+                    <img class="regist-code" src="../../../assets/login_captcha.png" alt="">
+                </el-col>
+            </el-row>
+        </el-form-item>
+        <el-form-item label="验证码" :label-width="formLabelWidth">
+            <el-row>
+                <el-col :span="17">
+                       <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-col>
+                <el-col :span="7">
+                    <el-button>获取用户验证码</el-button>
+                </el-col>
+            </el-row>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -24,11 +53,24 @@ export default {
         name: ""
       },
       // 左侧的文本宽度
-      formLabelWidth: "120px"
+      formLabelWidth: "62px"
     };
   }
 };
 </script>
 
-<style>
+<style lang="less">
+    .el-dialog__header {
+        background: linear-gradient(to right,#04befa,#1198f7)
+    }
+    .dialog__title {
+        color: white
+    }
+    .regist-code {
+        width: 100%;
+        height: 40.8px
+    }
+    .regist-box {
+        height: 40.8px
+    }
 </style>
