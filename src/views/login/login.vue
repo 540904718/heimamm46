@@ -30,7 +30,7 @@
                 v-model="loginForm.loginCode"
               ></el-input>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="7" class="code-col">
               <img class="login-code" src="../../assets/login_captcha.png" alt />
             </el-col>
           </el-row>
@@ -122,6 +122,10 @@ export default {
     background: rgba(245, 245, 245, 1);
     padding-right: 41px;
     box-sizing: border-box;
+
+    .code-col {
+      height: 40.8px
+    }
 
     .login-code {
       width: 100%;
