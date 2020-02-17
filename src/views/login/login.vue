@@ -45,17 +45,24 @@
         </el-form-item>
         <el-form-item>
           <el-button class="my-btn" @click="submitForm('loginForm')" type="primary">登录</el-button>
-          <el-button class="my-btn" type="primary">注册</el-button>
+          <el-button @click="showRegister" class="my-btn" type="primary">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
     <!-- 右边图片 -->
     <img src="../../assets/login_banner_ele.png" alt />
+    <registerDialog ref="registerDialog"></registerDialog>
   </div>
 </template>
 
 <script>
+// 导入并注册组件
+import registerDialog from './components/registerDialog'
 export default {
+  // 注册组件
+  components: {
+    registerDialog
+  },
   name: "login",
   data() {
     return {
@@ -96,6 +103,10 @@ export default {
           return false;
         }
       });
+    },
+
+    showRegister() {
+        this.$refs.registerDialog.dialogFormVisible = true
     }
   }
 };
