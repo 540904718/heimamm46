@@ -20,7 +20,7 @@
               <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-col>
             <el-col class="regist-box" :offset="1" :span="7">
-              <img class="regist-code" src="../../../assets/login_captcha.png" alt />
+              <img class="regist-code" :src="codeURL" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -113,7 +113,9 @@ export default {
         ]
       },
       // 左侧的文本宽度
-      formLabelWidth: "62px"
+      formLabelWidth: "62px",
+      // 验证码图片地址
+      codeURL: process.env.VUE_APP_URL + "/captcha?type=sendsms"
     };
   }
 };
