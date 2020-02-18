@@ -58,6 +58,8 @@
 <script>
 // 导入并注册组件
 import registerDialog from "./components/registerDialog";
+// 测试基地址配置
+window.console.log(process.env.VUE_APP_URL)
 export default {
   // 注册组件
   components: {
