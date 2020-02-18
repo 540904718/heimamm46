@@ -20,7 +20,8 @@
               <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-col>
             <el-col class="regist-box" :offset="1" :span="7">
-              <img class="regist-code" :src="codeURL" alt />
+              <!-- 图片验证码 -->
+              <img @click="changeCode" class="regist-code" :src="codeURL" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -117,7 +118,18 @@ export default {
       // 验证码图片地址
       codeURL: process.env.VUE_APP_URL + "/captcha?type=sendsms"
     };
-  }
+  },
+
+  methods: {
+    changeCode() {
+      // 随机数
+        // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Math.random()
+        // 时间戳
+        // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Date.now()
+        this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + Date.now()
+
+    }
+  },
 };
 </script>
 
