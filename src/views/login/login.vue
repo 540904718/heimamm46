@@ -57,7 +57,7 @@
 
 <script>
 // 导入并注册组件
-import registerDialog from './components/registerDialog'
+import registerDialog from "./components/registerDialog";
 export default {
   // 注册组件
   components: {
@@ -87,7 +87,7 @@ export default {
         loginCode: [
           { required: true, message: "验证码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "验证码的长度为4位", trigger: "blur" }
-        ]
+        ],
       }
     };
   },
@@ -97,16 +97,16 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message.success('验证成功')
+          this.$message.success("验证成功");
         } else {
-          this.$message.error('验证失败')
+          this.$message.error("验证失败");
           return false;
         }
       });
     },
 
     showRegister() {
-        this.$refs.registerDialog.dialogFormVisible = true
+      this.$refs.registerDialog.dialogFormVisible = true;
     }
   }
 };
@@ -135,7 +135,7 @@ export default {
     box-sizing: border-box;
 
     .code-col {
-      height: 40.8px
+      height: 40.8px;
     }
 
     .login-code {
