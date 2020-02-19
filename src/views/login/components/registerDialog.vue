@@ -2,6 +2,19 @@
   <div>
     <el-dialog width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
       <el-form status-icon :rules="rules" ref="registerForm" :model="form">
+        <el-form-item label="头像">
+          <el-upload
+            class="avatar-uploader"
+            :action="uploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            name="image"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="昵称" prop="username" :label-width="formLabelWidth">
           <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
@@ -21,7 +34,7 @@
             </el-col>
             <el-col class="regist-box" :offset="1" :span="7">
               <!-- 图片验证码 -->
-              <img @click="changeCode" class="regist-code" :src="codeURL" alt="" />
+              <img @click="changeCode" class="regist-code" :src="codeURL" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -87,7 +100,9 @@ export default {
         code: ""
       },
       delay: 0,
-
+      // 本地图片预览地址
+      imageUrl: "",
+      uploadUrl: process.env.VUE_APP_URL + "/uploads",
       // 校验规则
       rules: {
         username: [
@@ -166,6 +181,23 @@ export default {
           }
         });
       }
+    },
+    // 上传成功
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    // 上传之前
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     }
   }
 };
@@ -184,5 +216,34 @@ export default {
 }
 .regist-box {
   height: 40.8px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar-uploader {
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
