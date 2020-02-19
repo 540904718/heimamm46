@@ -17,11 +17,11 @@
         <el-form-item label="图形码" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
-              <el-input v-model="form.code" autocomplete="off"></el-input>
+              <el-input v-model="form.name" autocomplete="off"></el-input>
             </el-col>
             <el-col class="regist-box" :offset="1" :span="7">
               <!-- 图片验证码 -->
-              <img @click="changeCode" class="regist-code" :src="codeURL" alt />
+              <img @click="changeCode" class="regist-code" :src="codeURL" alt="" />
             </el-col>
           </el-row>
         </el-form-item>
@@ -32,7 +32,10 @@
             </el-col>
             <el-col :offset="1" :span="7">
               <!-- 点击获取 用户验证码 -->
-              <el-button @click="getSMS">获取用户验证码</el-button>
+              <el-button
+                :disabled="delay!=0"
+                @click="getSMS"
+              >{{delay==0? "点击获取验证码" : `还有${delay}秒继续获取`}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -46,7 +49,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 const checkPhone = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
   const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
@@ -61,7 +64,7 @@ const checkPhone = (rule, value, callback) => {
 };
 const checkEmail = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
-  const reg =  /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
   // 校验方法 test 方法 是正则
   // 对 返回的是true
   // 错  返回的 是  false
@@ -81,8 +84,9 @@ export default {
         password: "",
         phone: "",
         emali: "",
-        code:""
+        code: ""
       },
+      delay: 0,
 
       // 校验规则
       rules: {
@@ -119,42 +123,51 @@ export default {
       // 左侧的文本宽度
       formLabelWidth: "62px",
       // 验证码图片地址
-      codeURL: process.env.VUE_APP_URL + "/captcha?type=sendsms",
-      // 跨域携带cookie
+      codeURL: process.env.VUE_APP_URL + "/captcha?type=sendsms"
     };
   },
 
   methods: {
     changeCode() {
       // 随机数
-        // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Math.random()
-        // 时间戳
-        // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Date.now()
-        this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + Date.now()
-
+      // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Math.random()
+      // 时间戳
+      // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Date.now()
+      this.codeURL =
+        process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + Date.now();
     },
 
     getSMS() {
-      axios({
-        url: process.env.VUE_APP_URL + '/sendsms',
-        method:'post',
-        data: {
-          code: this.form.code,
-          phone: this.form.phone
-        },
-         withCredentials: true
-      }).then(res=>{
-        //成功回调
-        window.console.log(res)
+      if (this.delay == 0) {
+        this.delay = 60;
+        const interId = setInterval(() => {
+          this.delay--;
+          if (this.delay == 0) {
+            clearInterval(interId);
+          }
+        }, 1000);
+        axios({
+          url: process.env.VUE_APP_URL + "/sendsms",
+          method: "post",
+          data: {
+            code: this.form.code,
+            phone: this.form.phone
+          },
+          // 跨域携带cookie
+          withCredentials: true
+        }).then(res => {
+          //成功回调
+          window.console.log(res);
 
-        if (res.data.code === 200) {
-          this.$message.success('验证码获取成功' + res.data.data.captcha)
-        } else if (res.data.code === 0) {
-           this.$message.error(res.data.message)
-        }
-      });
+          if (res.data.code === 200) {
+            this.$message.success("验证码获取成功" + res.data.data.captcha);
+          } else if (res.data.code === 0) {
+            this.$message.error(res.data.message);
+          }
+        });
+      }
     }
-  },
+  }
 };
 </script>
 
