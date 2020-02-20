@@ -20,7 +20,7 @@
         <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
         </el-form-item>
-        <!-- 验证码 -->
+        <!-- 登录验证码 -->
         <el-form-item prop="loginCode">
           <el-row>
             <el-col :span="17">
@@ -31,7 +31,7 @@
               ></el-input>
             </el-col>
             <el-col :span="7" class="code-col">
-              <img class="login-code" src="../../assets/login_captcha.png" alt />
+              <img @click="changeCode" class="login-code" :src="codeURL" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -56,8 +56,7 @@
 </template>
 
 <script>
-
-import { checkPhone } from '@/utils/validator.js'
+import { checkPhone } from "@/utils/validator.js";
 
 // 导入并注册组件
 import registerDialog from "./components/registerDialog";
@@ -81,6 +80,7 @@ export default {
         // 是否勾选
         isChecked: false
       },
+      codeURL: process.env.VUE_APP_URL + "/captcha?type=login",
 
       // 校验规则
       rules: {
@@ -112,6 +112,11 @@ export default {
           return false;
         }
       });
+    },
+
+    changeCode() {
+      this.codeURL =
+        process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
     },
 
     showRegister() {
