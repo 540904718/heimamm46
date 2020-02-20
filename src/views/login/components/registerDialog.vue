@@ -158,6 +158,8 @@ export default {
   },
 
   methods: {
+    // 表单的提交方法
+    // 提交表单
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -214,7 +216,10 @@ export default {
     handleAvatarSuccess(res, file) {
       window.console.log(res);
       this.imageUrl = URL.createObjectURL(file.raw);
+      // 保存服务器返回的图片地址
       this.form.avatar = res.data.file_path;
+      // 表单中头像字段的校验
+      this.$refs.registerForm.validateField('avatar')
     },
     // 上传之前
     beforeAvatarUpload(file) {
