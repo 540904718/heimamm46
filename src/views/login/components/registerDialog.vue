@@ -65,7 +65,8 @@
 // 导入axios
 // import axios from "axios";
 // import {sendsms} from '../../../api/register.js'
-import { sendsms } from "@/api/register.js";
+// 使用@关键字  简化编码
+import { sendsms, register } from "@/api/register.js";
 const checkPhone = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
   const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
@@ -80,7 +81,7 @@ const checkPhone = (rule, value, callback) => {
 };
 const checkEmail = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
-  const reg =  /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
   // 校验方法 test 方法 是正则
   // 对 返回的是true
   // 错  返回的 是  false
@@ -163,7 +164,27 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message.success("验证成功");
+          register({
+            username: this.form.username,
+
+            password: this.form.password,
+
+            phone: this.form.phone,
+
+            email: this.form.email,
+
+            avatar: this.form.avatar,
+
+            rcode: this.form.rcode
+          }).then(res => {
+            // window.console.log(res)
+            if (res.data.code ===200) {
+              this.$message.success("恭喜你,注册成功");
+              this.dialogFormVisible = false;
+            } else if (res.data.code === 201) {
+                this.$message.error(res.data.message)
+            }
+          });
         } else {
           this.$message.error("验证失败");
           return false;
@@ -219,7 +240,7 @@ export default {
       // 保存服务器返回的图片地址
       this.form.avatar = res.data.file_path;
       // 表单中头像字段的校验
-      this.$refs.registerForm.validateField('avatar')
+      this.$refs.registerForm.validateField("avatar");
     },
     // 上传之前
     beforeAvatarUpload(file) {
