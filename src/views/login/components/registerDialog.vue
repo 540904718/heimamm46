@@ -30,7 +30,7 @@
         <el-form-item label="图形码" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form.code" autocomplete="off"></el-input>
             </el-col>
             <el-col class="regist-box" :offset="1" :span="7">
               <!-- 图片验证码 -->
@@ -62,7 +62,9 @@
 </template>
 
 <script>
-import axios from "axios";
+// 导入axios
+// import axios from "axios";
+import {sendsms} from '../../../api/register.js'
 const checkPhone = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
   const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
@@ -161,16 +163,23 @@ export default {
             clearInterval(interId);
           }
         }, 1000);
-        axios({
-          url: process.env.VUE_APP_URL + "/sendsms",
-          method: "post",
-          data: {
+        // 调用短信验证码接口
+        // axios({
+        //   url: process.env.VUE_APP_URL + "/sendsms",
+        //   method: "post",
+        //   data: {
+        //     code: this.form.code,
+        //     phone: this.form.phone
+        //   },
+        //   // 跨域携带cookie
+        //   withCredentials: true
+        // })
+        sendsms(
+          {
             code: this.form.code,
             phone: this.form.phone
-          },
-          // 跨域携带cookie
-          withCredentials: true
-        }).then(res => {
+          }
+        ).then(res => {
           //成功回调
           window.console.log(res);
 
