@@ -64,7 +64,8 @@
 <script>
 // 导入axios
 // import axios from "axios";
-import {sendsms} from '../../../api/register.js'
+// import {sendsms} from '../../../api/register.js'
+import {sendsms} from '@/api/register.js'
 const checkPhone = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
   const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
