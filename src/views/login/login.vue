@@ -18,7 +18,7 @@
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="password">
-          <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
+          <el-input show-password prefix-icon="el-icon-lock" placeholder="请输入密码" v-model="loginForm.password"></el-input>
         </el-form-item>
         <!-- 登录验证码 -->
         <el-form-item prop="loginCode">
@@ -56,9 +56,14 @@
 </template>
 
 <script>
+// 导入  手机校验的工具函数
 import { checkPhone } from "@/utils/validator.js";
 
+// 导入 登录接口的函数
 import { login } from "@/api/login.js";
+
+// 导入  token的工具函数
+import {setToken} from '@/utils/token.js'
 
 // 导入并注册组件
 import registerDialog from "./components/registerDialog";
@@ -124,7 +129,8 @@ export default {
                 this.$message.success('欢迎您!')
                 // 服务器返回了token
                 // token 保存到 哪里  localStorage(一直都在)  SessionStorage(刷新消失)
-                window.localStorage.setItem('heimammToken',res.data.data.token)
+                // window.localStorage.setItem('heimammToken',res.data.data.token)
+                setToken(res.data.data.token)
                 // 跳转到首页
                 this.$router.push('/index')
               } else if (res.data.code === 202) {
