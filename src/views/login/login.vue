@@ -58,6 +58,8 @@
 <script>
 import { checkPhone } from "@/utils/validator.js";
 
+import { login } from "@/api/login.js";
+
 // 导入并注册组件
 import registerDialog from "./components/registerDialog";
 // 测试基地址配置
@@ -106,7 +108,30 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$message.success("验证成功");
+          // 验证是否勾选表单
+          if (this.loginForm.isChecked != true) {
+            return this.$message.warning("请勾选用户协议");
+          }
+          // 已勾选表单
+          login({
+            phone: this.loginForm.phone,
+            code: this.loginForm.loginCode,
+            password: this.loginForm.password
+          }).then(res => {
+              window.console.log(res)
+              if (res.data.code === 200) {
+                // 登录成功
+                this.$message.success('欢迎您!')
+                // 服务器返回了token
+                // token 保存到 哪里  localStorage(一直都在)  SessionStorage(刷新消失)
+                window.localStorage.setItem('heimammToken',res.data.data.token)
+                // 跳转到首页
+                this.$router.push('/index')
+              } else if (res.data.code === 202) {
+                // 登录失败
+                  this.$message.error(res.data.message)
+              }
+          })
         } else {
           this.$message.error("验证失败");
           return false;
