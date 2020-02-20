@@ -67,30 +67,9 @@
 // import {sendsms} from '../../../api/register.js'
 // 使用@关键字  简化编码
 import { sendsms, register } from "@/api/register.js";
-const checkPhone = (rule, value, callback) => {
-  // 定义正则表达式  定义了一个正则对象
-  const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-  // 校验方法 test 方法 是正则
-  // 对 返回的是true
-  // 错  返回的 是  false
-  if (reg.test(value) == true) {
-    callback();
-  } else {
-    callback(new Error("请输入正确的手机号码"));
-  }
-};
-const checkEmail = (rule, value, callback) => {
-  // 定义正则表达式  定义了一个正则对象
-  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-  // 校验方法 test 方法 是正则
-  // 对 返回的是true
-  // 错  返回的 是  false
-  if (reg.test(value) == true) {
-    callback();
-  } else {
-    callback(new Error("请输入正确的邮箱号"));
-  }
-};
+
+import { checkEmail,checkPhone } from '@/utils/validator.js'
+
 export default {
   data() {
     return {
