@@ -41,7 +41,7 @@
         <el-form-item label="验证码" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
-              <el-input v-model="form.name" autocomplete="off"></el-input>
+              <el-input v-model="form.rcode" autocomplete="off"></el-input>
             </el-col>
             <el-col :offset="1" :span="7">
               <!-- 点击获取 用户验证码 -->
@@ -55,7 +55,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitForm('registerForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -65,27 +65,27 @@
 // 导入axios
 // import axios from "axios";
 // import {sendsms} from '../../../api/register.js'
-import {sendsms} from '@/api/register.js'
+import { sendsms } from "@/api/register.js";
 const checkPhone = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
-  const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+  const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
   // 校验方法 test 方法 是正则
   // 对 返回的是true
   // 错  返回的 是  false
   if (reg.test(value) == true) {
-    callback;
+    callback();
   } else {
     callback(new Error("请输入正确的手机号码"));
   }
 };
 const checkEmail = (rule, value, callback) => {
   // 定义正则表达式  定义了一个正则对象
-  const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  const reg =  /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
   // 校验方法 test 方法 是正则
   // 对 返回的是true
   // 错  返回的 是  false
   if (reg.test(value) == true) {
-    callback;
+    callback();
   } else {
     callback(new Error("请输入正确的邮箱号"));
   }
@@ -107,7 +107,9 @@ export default {
         // 图形码
         code: "",
         // 头像
-        avatar:""
+        avatar: "",
+        // 验证码
+        rcode: ""
       },
       delay: 0,
       // 本地图片预览地址
@@ -115,7 +117,7 @@ export default {
       uploadUrl: process.env.VUE_APP_URL + "/uploads",
       // 校验规则
       rules: {
-         avatar: [
+        avatar: [
           { required: true, message: "用户头像不能为空", trigger: "blur" }
         ],
         username: [
@@ -156,6 +158,16 @@ export default {
   },
 
   methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$message.success("验证成功");
+        } else {
+          this.$message.error("验证失败");
+          return false;
+        }
+      });
+    },
     changeCode() {
       // 随机数
       // this.codeURL= process.env.VUE_APP_URL + "/captcha?type=sendsms&" + Math.random()
@@ -166,15 +178,15 @@ export default {
     },
 
     getSMS() {
-       const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-       if (reg.test(this.form.phone) !=true) {
-         this.$message.error('你输入的手机格式有误,请检查')
-         return
-       }
+      const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+      if (reg.test(this.form.phone) != true) {
+        this.$message.error("你输入的手机格式有误,请检查");
+        return;
+      }
 
-       if (this.form.code.length != 4) {
-         this.$message.error('你输入的验证码长度有误,请重新输入')
-       }
+      if (this.form.code.length != 4) {
+        this.$message.error("你输入的验证码长度有误,请重新输入");
+      }
       if (this.delay == 0) {
         this.delay = 60;
         const interId = setInterval(() => {
@@ -183,12 +195,10 @@ export default {
             clearInterval(interId);
           }
         }, 1000);
-        sendsms(
-          {
-            code: this.form.code,
-            phone: this.form.phone
-          }
-        ).then(res => {
+        sendsms({
+          code: this.form.code,
+          phone: this.form.phone
+        }).then(res => {
           //成功回调
           window.console.log(res);
 
@@ -202,10 +212,9 @@ export default {
     },
     // 上传成功
     handleAvatarSuccess(res, file) {
-      window.console.log(res)
+      window.console.log(res);
       this.imageUrl = URL.createObjectURL(file.raw);
-      this.form.avatar = res.data.file_path
-      
+      this.form.avatar = res.data.file_path;
     },
     // 上传之前
     beforeAvatarUpload(file) {
