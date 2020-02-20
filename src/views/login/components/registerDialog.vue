@@ -2,7 +2,7 @@
   <div>
     <el-dialog width="603px" center title="用户注册" :visible.sync="dialogFormVisible">
       <el-form status-icon :rules="rules" ref="registerForm" :model="form">
-        <el-form-item label="头像">
+        <el-form-item label="头像" prop="avatar">
           <el-upload
             class="avatar-uploader"
             :action="uploadUrl"
@@ -96,11 +96,18 @@ export default {
       // 是否显示对话框
       dialogFormVisible: false,
       form: {
+        // 昵称
         username: "",
+        // 密码
         password: "",
+        // 手机号
         phone: "",
+        // 电子邮箱
         emali: "",
-        code: ""
+        // 图形码
+        code: "",
+        // 头像
+        avatar:""
       },
       delay: 0,
       // 本地图片预览地址
@@ -108,6 +115,9 @@ export default {
       uploadUrl: process.env.VUE_APP_URL + "/uploads",
       // 校验规则
       rules: {
+         avatar: [
+          { required: true, message: "用户头像不能为空", trigger: "blur" }
+        ],
         username: [
           { required: true, message: "昵称不能为空", trigger: "blur" },
           {
@@ -192,15 +202,18 @@ export default {
     },
     // 上传成功
     handleAvatarSuccess(res, file) {
+      window.console.log(res)
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.form.avatar = res.data.file_path
+      
     },
     // 上传之前
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpeg" || "image/png" || "image/gif";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像只能是图片格式");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
