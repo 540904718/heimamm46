@@ -27,7 +27,7 @@
         <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
           <el-input show-password v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图形码" :label-width="formLabelWidth">
+        <el-form-item label="图形码" prop="code" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
               <el-input v-model="form.code" autocomplete="off"></el-input>
@@ -38,7 +38,7 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="验证码" :label-width="formLabelWidth">
+        <el-form-item label="验证码" prop="rcode" :label-width="formLabelWidth">
           <el-row>
             <el-col :span="16">
               <el-input v-model="form.rcode" autocomplete="off"></el-input>
@@ -54,7 +54,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="cancel(registerForm)">取 消</el-button>
         <el-button type="primary" @click="submitForm('registerForm')">确 定</el-button>
       </div>
     </el-dialog>
@@ -159,6 +159,11 @@ export default {
   },
 
   methods: {
+    // 关闭表单
+    cancel(formName) {
+      window.console.log(formName)
+      this.dialogFormVisible = false;
+    },
     // 表单的提交方法
     // 提交表单
     submitForm(formName) {
@@ -178,11 +183,15 @@ export default {
             rcode: this.form.rcode
           }).then(res => {
             // window.console.log(res)
-            if (res.data.code ===200) {
+            if (res.data.code === 200) {
               this.$message.success("恭喜你,注册成功");
+              // 清空表单
+              this.$refs[formName].resetFields();
+              // 人为的清空 图片
+              this.imageUrl = "";
               this.dialogFormVisible = false;
             } else if (res.data.code === 201) {
-                this.$message.error(res.data.message)
+              this.$message.error(res.data.message);
             }
           });
         } else {
