@@ -161,7 +161,7 @@ export default {
   methods: {
     // 关闭表单
     cancel(formName) {
-      window.console.log(formName)
+      window.console.log(formName);
       this.dialogFormVisible = false;
     },
     // 表单的提交方法
