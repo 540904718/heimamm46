@@ -156,6 +156,15 @@ export default {
     },
 
     getSMS() {
+       const reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+       if (reg.test(this.form.phone) !=true) {
+         this.$message.error('你输入的手机格式有误,请检查')
+         return
+       }
+
+       if (this.form.code.length != 4) {
+         this.$message.error('你输入的验证码长度有误,请重新输入')
+       }
       if (this.delay == 0) {
         this.delay = 60;
         const interId = setInterval(() => {
@@ -164,17 +173,6 @@ export default {
             clearInterval(interId);
           }
         }, 1000);
-        // 调用短信验证码接口
-        // axios({
-        //   url: process.env.VUE_APP_URL + "/sendsms",
-        //   method: "post",
-        //   data: {
-        //     code: this.form.code,
-        //     phone: this.form.phone
-        //   },
-        //   // 跨域携带cookie
-        //   withCredentials: true
-        // })
         sendsms(
           {
             code: this.form.code,
