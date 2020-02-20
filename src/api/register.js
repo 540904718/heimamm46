@@ -9,3 +9,15 @@ export function sendsms(data) {
         withCredentials: true
     })
 }
+
+// 把注册接口  抽取为方法
+
+export function register(data) {
+    return axios({
+        url: process.env.VUE_APP_URL + '/register',
+        method: 'post',
+        data,
+        // 跨域携带cookie
+        withCredentials: true
+    })
+}
