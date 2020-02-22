@@ -2,7 +2,7 @@
   <el-container class="my-container">
     <el-header class="my-header">
       <div class="left">
-        <i class="el-icon-s-fold"></i>
+        <i @click="isCollapse=!isCollapse" class="el-icon-s-fold"></i>
         <img src="../../assets/index_logo.png" alt />
         <span>黑马面面</span>
       </div>
@@ -14,8 +14,8 @@
     </el-header>
     <el-container>
       <!-- 左侧边栏 -->
-      <el-aside class="my-aside" width="200px">
-        <el-menu default-active="2" class="el-menu-vertical-demo">
+      <el-aside class="my-aside" width="auto">
+        <el-menu default-active="2" class="el-menu-vertical-demo" :collapse="isCollapse">
           <el-menu-item index="1">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -52,8 +52,12 @@ export default {
   name: "index",
   data() {
     return {
+      // 用户头像
       userIcon: "",
-      userName: ""
+      // 用户名
+      userName: "",
+      // 是否折叠
+      isCollapse: false
     };
   },
   methods: {
@@ -132,6 +136,11 @@ export default {
 
   .my-main {
     background-color: gold;
+  }
+  /* c3中的transition(过渡), 需要有开始和结束的值 */
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
   }
 }
 </style>
