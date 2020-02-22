@@ -9,7 +9,7 @@
       <div class="right">
         <img :src="userIcon" alt />
         <span class="name">{{userName}},您好</span>
-        <el-button type="primary">退出</el-button>
+        <el-button type="primary" @click="logout">退出</el-button>
       </div>
     </el-header>
     <el-container>
@@ -20,20 +20,48 @@
 </template>
 
 <script>
-import { info } from "@/api/index.js";
+// 导入接口
+import { info,logout } from "@/api/index.js";
+// 导入token 函数
+import { removeToken } from '@/utils/token.js'
 export default {
-  name:'index',
+  name: "index",
   data() {
     return {
       userIcon: "",
       userName: ""
+    };
+  },
+  methods: {
+    // 退出当前页面
+    logout() {
+      this.$confirm("你确定要离开我们网站吗?", "友情提示", {
+        confirmButtonText: "狠心离开",
+        cancelButtonText: "继续看看",
+        type: "warning"
+      })
+        .then(() => {
+          // 点击确定
+          logout().then(res => {
+            // window.console.log(res)
+            if (res.data.code == 200) {
+              // 移除token
+              removeToken()
+              // 去登录页
+              this.$router.push('/login')
+            }
+          })
+        })
+        .catch(() => {
+          // 点击取消
+        });
     }
   },
   created() {
     info().then(res => {
       // window.console.log(res)
-      this.userName = res.data.data.username
-      this.userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar
+      this.userName = res.data.data.username;
+      this.userIcon = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
     });
   }
 };
