@@ -13,7 +13,31 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside class="my-aside" width="200px">Aside</el-aside>
+      <!-- 左侧边栏 -->
+      <el-aside class="my-aside" width="200px">
+        <el-menu default-active="2" class="el-menu-vertical-demo">
+          <el-menu-item index="1">
+            <i class="el-icon-pie-chart"></i>
+            <span slot="title">数据概览</span>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <i class="el-icon-user"></i>
+            <span slot="title">用户列表</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-edit-outline"></i>
+            <span slot="title">题库列表</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-office-building"></i>
+            <span slot="title">企业列表</span>
+          </el-menu-item>
+          <el-menu-item index="5">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">学科列表</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
       <el-main class="my-main">Main</el-main>
     </el-container>
   </el-container>
@@ -21,9 +45,9 @@
 
 <script>
 // 导入接口
-import { info,logout } from "@/api/index.js";
+import { info, logout } from "@/api/index.js";
 // 导入token 函数
-import { removeToken } from '@/utils/token.js'
+import { removeToken } from "@/utils/token.js";
 export default {
   name: "index",
   data() {
@@ -44,13 +68,13 @@ export default {
           // 点击确定
           logout().then(res => {
             // window.console.log(res)
-            if (res.data.code == 200) {
+            if (res.data.code === 200) {
               // 移除token
-              removeToken()
+              removeToken();
               // 去登录页
-              this.$router.push('/login')
+              this.$router.push("/login");
             }
-          })
+          });
         })
         .catch(() => {
           // 点击取消
@@ -103,7 +127,7 @@ export default {
   }
 
   .my-aside {
-    background-color: skyblue;
+    // background-color: skyblue;
   }
 
   .my-main {
