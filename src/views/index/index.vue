@@ -7,8 +7,8 @@
         <span>黑马面面</span>
       </div>
       <div class="right">
-        <img src="../../assets/logo.png" alt />
-        <span class="name">李达,您好</span>
+        <img :src="userIcon" alt />
+        <span class="name">{{userName}},您好</span>
         <el-button type="primary">退出</el-button>
       </div>
     </el-header>
@@ -20,7 +20,23 @@
 </template>
 
 <script>
-export default {};
+import { info } from "@/api/index.js";
+export default {
+  name:'index',
+  data() {
+    return {
+      userIcon: "",
+      userName: ""
+    }
+  },
+  created() {
+    info().then(res => {
+      // window.console.log(res)
+      this.userName = res.data.data.username
+      this.userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar
+    });
+  }
+};
 </script>
 
 <style lang="less">
@@ -35,7 +51,7 @@ export default {};
       align-items: center;
       i {
         font-size: 24px;
-        margin-right: 22px
+        margin-right: 22px;
       }
       img {
         margin-right: 11px;
@@ -49,11 +65,11 @@ export default {};
         width: 43px;
         height: 43px;
         border-radius: 50%;
-        margin-right: 9px
+        margin-right: 9px;
       }
 
       span.name {
-        margin-right: 38px
+        margin-right: 38px;
       }
     }
   }
