@@ -27,6 +27,9 @@ import { getToken, removeToken } from '@/utils/token.js'
 // 导入用户信息接口
 import { info } from '@/api/index.js'
 
+// 导入  按需导入  element-ui弹框
+import { Message } from 'element-ui'
+
 import index from '../views/index/index.vue'
 // 注册一下 use
 Vue.use(VueRouter)
@@ -93,6 +96,7 @@ router.beforeEach((to, from, next) => {
         // token 为空
         if (getToken() == undefined) {
             // 提示用户
+            Message.warning('登录状态有误,请检查')
             // 返回登录页
             next('/login')
         } else {
@@ -100,6 +104,7 @@ router.beforeEach((to, from, next) => {
                 // token 不为空
                 if (res.data.code === 206) {
                     // 提示用户
+                    Message.warning('登录状态有误,请检查')
                     // 返回登录页
                     next('/login')
                     // 删除token
