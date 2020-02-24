@@ -21,6 +21,12 @@ import NProgress from 'nprogress'
 
 import 'nprogress/nprogress.css'
 
+// 导入 工具函数
+import { getToken, removeToken } from '@/utils/token.js'
+
+// 导入用户信息接口
+import { info } from '@/api/index.js'
+
 import index from '../views/index/index.vue'
 // 注册一下 use
 Vue.use(VueRouter)
@@ -78,18 +84,45 @@ const router = new VueRouter({
 
 // 导航守卫 beforeEach 进入之前
 router.beforeEach((to, from, next) => {
-    // 往后走
-    next()
     // 开启进度条
     NProgress.start()
+    // window.console.log(to.path)
+    // 需要判断登录状态
+    if (to.path != '/login') {
+        // token 非空判断
+        // token 为空
+        if (getToken() == undefined) {
+            // 提示用户
+            // 返回登录页
+            next('/login')
+        } else {
+            info().then(res => {
+                // token 不为空
+                if (res.data.code === 206) {
+                    // 提示用户
+                    // 返回登录页
+                    next('/login')
+                    // 删除token
+                    removeToken()
+                } else if (res.data.code === 200) {
+                    // 往后走
+                    next()
+                }
+            })
+        }
+        // token 真假判断
+    } else {
+        // 是登录页
+        next()
+    }
 })
 
 // 导航守卫 afterEach 进入之后
 router.afterEach(() => {
-   setTimeout(() => {
+    setTimeout(() => {
         // 关闭进度条
-    NProgress.done()
-   }, 100);
+        NProgress.done()
+    }, 100);
 })
 
 
