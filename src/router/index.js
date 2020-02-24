@@ -50,43 +50,59 @@ const router = new VueRouter({
 
         {
             path: '/login',
-            component: login
-        },
-
-        {
-            path: '/index',
-            component: index
+            component: login,
+            meta: {
+                title: '登录'
+            }
         },
 
         {
             path: '/index',
             component: index,
+            meta: {
+                title: '首页'
+            },
 
             children: [
                 // chart
                 {
                     path: 'chart',
-                    component: chart
+                    component: chart,
+                    meta: {
+                        title: '数据概览'
+                    }
                 },
                 // user
                 {
                     path: 'user',
-                    component: user
+                    component: user,
+                    meta: {
+                        title: '用户列表'
+                    }
                 },
                 // question
                 {
                     path: 'question',
-                    component: question
+                    component: question,
+                    meta: {
+                        title: '题库列表'
+                    }
                 },
                 // enterprise
                 {
                     path: 'enterprise',
-                    component: enterprise
+                    component: enterprise,
+                    meta: {
+                        title: '企业列表'
+                    }
                 },
                 // subject
                 {
                     path: 'subject',
-                    component: subject
+                    component: subject,
+                    meta: {
+                        title: '学科列表'
+                    }
                 }
             ]
         }
@@ -139,7 +155,9 @@ router.beforeEach((to, from, next) => {
 })
 
 // 导航守卫 afterEach 进入之后
-router.afterEach(() => {
+router.afterEach((to) => {
+    // 修改标题 
+    window.document.title = to.meta.title
     setTimeout(() => {
         // 关闭进度条
         NProgress.done()
