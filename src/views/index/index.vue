@@ -15,7 +15,12 @@
     <el-container>
       <!-- 左侧边栏 -->
       <el-aside class="my-aside" width="auto">
-        <el-menu router :default-active="$route.path" class="el-menu-vertical-demo" :collapse="isCollapse">
+        <el-menu
+          router
+          :default-active="$route.path"
+          class="el-menu-vertical-demo"
+          :collapse="isCollapse"
+        >
           <el-menu-item index="/index/chart">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -50,7 +55,7 @@
 // 导入接口
 import { info, logout } from "@/api/index.js";
 // 导入token 函数
-import { removeToken,getToken } from "@/utils/token.js";
+import { removeToken, getToken } from "@/utils/token.js";
 export default {
   name: "index",
   data() {
@@ -63,11 +68,13 @@ export default {
       isCollapse: false
     };
   },
-
+  // 生命周期钩子
   beforeCreate() {
-    if(getToken() == undefined) {
-      this.$message.warning('不好意思,请先登录')
-      this.$router.push('/login')
+    if (getToken() == undefined) {
+      // 提示用户
+      this.$message.warning("不好意思,请先登录");
+      // 打回登录页
+      this.$router.push("/login");
     }
   },
 
@@ -99,13 +106,17 @@ export default {
   created() {
     info().then(res => {
       // window.console.log(res)
+      if (res.data.code === 206) {
+          this.$message.warning('登录状态有误,请重新登录')
+          removeToken()
+          this.$router.push('/login')
+      }
       this.userName = res.data.data.username;
       this.userIcon = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
     });
   }
 };
 </script>
-
 <style lang="less">
 .my-container {
   height: 100%;
