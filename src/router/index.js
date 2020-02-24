@@ -109,6 +109,8 @@ router.beforeEach((to, from, next) => {
         if (getToken() == undefined) {
             // 提示用户
             Message.warning('登录状态有误,请检查')
+            // 关闭进度条
+            NProgress.done()
             // 返回登录页
             next('/login')
         } else {
@@ -117,6 +119,8 @@ router.beforeEach((to, from, next) => {
                 if (res.data.code === 206) {
                     // 提示用户
                     Message.warning('登录状态有误,请检查')
+                    // 关闭进度条
+                    NProgress.done()
                     // 返回登录页
                     next('/login')
                     // 删除token

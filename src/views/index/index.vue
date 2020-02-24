@@ -53,9 +53,9 @@
 
 <script>
 // 导入接口
-import {logout } from "@/api/index.js";
+import { logout } from "@/api/index.js";
 // 导入token 函数
-import { removeToken} from "@/utils/token.js";
+import { removeToken } from "@/utils/token.js";
 export default {
   name: "index",
   data() {
@@ -68,29 +68,6 @@ export default {
       isCollapse: false
     };
   },
-  // 生命周期钩子
-  // beforeCreate() {
-  //   if (getToken() == undefined) {
-  //     // 提示用户
-  //     this.$message.warning("不好意思,请先登录");
-  //     // 打回登录页
-  //     this.$router.push("/login");
-  //   }
-  // },
-
-  // created() {
-  //   info().then(res => {
-  //     // window.console.log(res)
-  //     if (res.data.code === 206) {
-  //       this.$message.warning("登录状态有误,请重新登录");
-  //       removeToken();
-  //       this.$router.push("/login");
-  //     }
-  //     this.userName = res.data.data.username;
-  //     this.userIcon = process.env.VUE_APP_URL + "/" + res.data.data.avatar;
-  //   });
-  // },
-
   methods: {
     // 退出当前页面
     logout() {
