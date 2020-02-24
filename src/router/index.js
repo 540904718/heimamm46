@@ -16,6 +16,11 @@ import enterprise from '../views/index/enterprise/enterprise.vue'
 // 导入组件 嵌套路由 学科 subject
 import subject from '../views/index/subject/subject.vue'
 
+// 导入组件  导航守卫 
+import NProgress from 'nprogress'
+
+import 'nprogress/nprogress.css'
+
 import index from '../views/index/index.vue'
 // 注册一下 use
 Vue.use(VueRouter)
@@ -70,5 +75,23 @@ const router = new VueRouter({
 
     ]
 })
+
+// 导航守卫 beforeEach 进入之前
+router.beforeEach((to, from, next) => {
+    // 往后走
+    next()
+    // 开启进度条
+    NProgress.start()
+})
+
+// 导航守卫 afterEach 进入之后
+router.afterEach(() => {
+   setTimeout(() => {
+        // 关闭进度条
+    NProgress.done()
+   }, 100);
+})
+
+
 // 暴露出去
 export default router
