@@ -38,7 +38,10 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main class="my-main">Main</el-main>
+      <el-main class="my-main">
+        <!-- 路由的出口 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -128,10 +131,6 @@ export default {
         margin-right: 38px;
       }
     }
-  }
-
-  .my-aside {
-    // background-color: skyblue;
   }
 
   .my-main {
