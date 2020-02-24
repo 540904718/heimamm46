@@ -142,6 +142,10 @@ router.beforeEach((to, from, next) => {
                     // 删除token
                     removeToken()
                 } else if (res.data.code === 200) {
+                    // 用户姓名
+                    const userName = res.data.data.username
+                    // 用户头像
+                    const userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar
                     // 往后走
                     next()
                 }
@@ -155,7 +159,7 @@ router.beforeEach((to, from, next) => {
 })
 
 // 导航守卫 afterEach 进入之后
-router.afterEach((to) => {
+router.afterEach(to => {
     // 修改标题 
     window.document.title = to.meta.title
     setTimeout(() => {
