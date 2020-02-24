@@ -19,5 +19,6 @@ new Vue({
   // 挂载到vue实例上  路由
   router,
   // 挂载到vue实例上  仓库
+  store,
   render: h => h(App),
 }).$mount('#app')

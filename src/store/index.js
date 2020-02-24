@@ -7,8 +7,8 @@ import Vuex from 'vuex'
 // 注册
 Vue.use(Vuex)
 
-const store = new Vue.store({
-    status: {
+const store = new Vuex.Store({
+    state: {
         // 用户名字
         userName: "",
 
@@ -19,13 +19,16 @@ const store = new Vue.store({
 
     mutations: {
         changeIcon(state,newIcon){
-            state.userName = newIcon
+            state.userIcon = newIcon
         },
         changeName(state,newName){
             state.userName = newName
         }          
     }
 })
+
+// 暴露出去
+export default store
 
 
 

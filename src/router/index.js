@@ -16,6 +16,9 @@ import enterprise from '../views/index/enterprise/enterprise.vue'
 // 导入组件 嵌套路由 学科 subject
 import subject from '../views/index/subject/subject.vue'
 
+// 导入 仓库
+import store from '../store/index'
+
 // 导入组件  导航守卫 
 import NProgress from 'nprogress'
 
@@ -146,6 +149,9 @@ router.beforeEach((to, from, next) => {
                     const userName = res.data.data.username
                     // 用户头像
                     const userIcon = process.env.VUE_APP_URL + '/' + res.data.data.avatar
+
+                    store.commit('changeName',userName)
+                    store.commit('changeIcon',userIcon)
                     // 往后走
                     next()
                 }
