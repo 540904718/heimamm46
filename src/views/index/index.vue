@@ -83,6 +83,10 @@ export default {
             if (res.data.code === 200) {
               // 移除token
               removeToken();
+              // 移除vuex中的名字
+              this.$store.commit('changeName','')
+              // 移除vuex中的头像
+              this.$store.commit('changeIcon','')
               // 去登录页
               this.$router.push("/login");
             }
