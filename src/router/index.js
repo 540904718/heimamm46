@@ -33,6 +33,10 @@ import { Message } from 'element-ui'
 import index from '../views/index/index.vue'
 // 注册一下 use
 Vue.use(VueRouter)
+
+// 定义 路由白名单 (不需要登录就可以访问的页面)
+const whitePaths = ['/login']
+
 // 创建路由对象
 const router = new VueRouter({
     // 路由规则
@@ -91,7 +95,9 @@ router.beforeEach((to, from, next) => {
     NProgress.start()
     // window.console.log(to.path)
     // 需要判断登录状态
-    if (to.path != '/login') {
+
+    // 白名单判断 不存在
+    if (whitePaths.includes(to.path.toLocaleLowerCase()) != true) {
         // token 非空判断
         // token 为空
         if (getToken() == undefined) {
