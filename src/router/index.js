@@ -42,6 +42,12 @@ const router = new VueRouter({
     // 路由规则
     // 登录
     routes: [
+        // 空地址的重定向
+        {
+            path: '/',
+            redirect: 'login'
+        },
+
         {
             path: '/login',
             component: login
