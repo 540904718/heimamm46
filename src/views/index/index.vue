@@ -50,7 +50,7 @@
 // 导入接口
 import { info, logout } from "@/api/index.js";
 // 导入token 函数
-import { removeToken } from "@/utils/token.js";
+import { removeToken,getToken } from "@/utils/token.js";
 export default {
   name: "index",
   data() {
@@ -63,6 +63,14 @@ export default {
       isCollapse: false
     };
   },
+
+  beforeCreate() {
+    if(getToken() == undefined) {
+      this.$message.warning('不好意思,请先登录')
+      this.$router.push('/login')
+    }
+  },
+
   methods: {
     // 退出当前页面
     logout() {
